@@ -1,0 +1,57 @@
+.post-item-wrapper {
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  min-height: 200px;
+  margin-bottom: 1rem;
+  padding: 1rem 2rem;
+  background-color: #fff;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background-color: #ff5836;
+    top: 0;
+    left: 0;
+    width: 0.5rem;
+    height: 100%;
+  }
+
+  .post-item-img {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+  }
+
+  .post-item-content {
+    h4 {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    p {
+      color: gray;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .created-date {
+    color: gray;
+    font-size: 12px;
+  }
+}

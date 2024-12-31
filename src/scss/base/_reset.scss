@@ -1,0 +1,25 @@
+html, body {
+  background-color: #f9f9f9 !important;
+}
+
+.main-content {
+  .main-container {
+    margin: 2rem auto;
+    width: 80%;
+    max-width: 1200px;
+
+    &.full-screen {
+      margin: auto;
+      width: 100%;
+      max-width: inherit;
+    }
+  }
+}
+
+@media screen and (max-width:1200px) {
+  .main-content {
+    .main-container {
+      width: 95%;
+    }
+  }
+}
