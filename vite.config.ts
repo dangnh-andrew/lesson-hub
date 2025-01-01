@@ -7,7 +7,10 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src') // Trỏ alias "@" đến thư mục "src"
+      '@': path.resolve(__dirname, 'src')
     }
+  },
+  optimizeDeps: {
+    include: ["@ckeditor/ckeditor5-react", "@ckeditor/ckeditor5-build-classic"]
   }
 });
