@@ -1,6 +1,15 @@
 $primary-color: #ff5836;
+$secondary-color: #198754;
+$tertiary-color: #2196f3;
 
-//define
 .primary-text {
   color: $primary-color;
+}
+
+.secondary-text {
+  color: $secondary-color;
+}
+
+.tertiary-text {
+  color: $tertiary-color;
 }
