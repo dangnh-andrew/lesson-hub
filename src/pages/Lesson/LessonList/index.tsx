@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import LessonItem from "./components/LessonItem";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { Pagination } from 'antd';
 
 const lessons = [
     { id: 1, title: "Lesson 1", description: "Introduction to programming", content: "Content of Lesson 1", chapter: "Chapter 1" },
@@ -28,7 +29,6 @@ const LessonListPage: React.FunctionComponent = () => {
     const [itemsPerPage] = useState(3); // Number of lessons per page
     const navigate = useNavigate();
 
-    // Pagination logic
     const indexOfLastLesson = currentPage * itemsPerPage;
     const indexOfFirstLesson = indexOfLastLesson - itemsPerPage;
     const currentLessons = lessonList.slice(indexOfFirstLesson, indexOfLastLesson);
@@ -93,16 +93,8 @@ const LessonListPage: React.FunctionComponent = () => {
         }));
     };
 
-    const handleNextPage = () => {
-        if (currentPage < Math.ceil(lessonList.length / itemsPerPage)) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
     };
 
     return (
@@ -119,38 +111,75 @@ const LessonListPage: React.FunctionComponent = () => {
 
                         {modalType === "add" ? (
                             <>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    placeholder="Lesson Title"
-                                    value={newLesson.title}
-                                    onChange={handleInputChange}
-                                />
-                                <textarea
-                                    name="description"
-                                    placeholder="Lesson Description"
-                                    value={newLesson.description}
-                                    onChange={handleDescriptionChange}
-                                />
-                                <CKEditor
-                                    editor={ClassicEditor}
-                                    data={newLesson.content}
-                                    onChange={handleContentChange}
-                                />
-                                <select name="chapter" value={newLesson.chapter} onChange={handleChapterChange}>
-                                    <option value="">Select Chapter</option>
-                                    {lessons.map((lesson) => (
-                                        <option key={lesson.id} value={lesson.chapter}>{lesson.chapter}</option>
-                                    ))}
-                                </select>
-                                <button onClick={handleAddNewLesson} className="btn btn-outline-primary">Add Lesson</button>
+                                <div className="modal-item">
+                                    <label>Title</label>
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        value={newLesson.title}
+                                        onChange={handleInputChange}
+                                        placeholder="Enter lesson title"
+                                    />
+                                </div>
+                                <div className="modal-item">
+                                    <label>Description</label>
+                                    <textarea
+                                        name="description"
+                                        value={newLesson.description}
+                                        onChange={handleDescriptionChange}
+                                        placeholder="Enter lesson description"
+                                    />
+                                </div>
+
+                                <div className="modal-item">
+                                    <label>Content</label>
+                                    <CKEditor
+                                        editor={ClassicEditor}
+                                        data={newLesson.content}
+                                        onChange={handleContentChange}
+                                        config={{
+                                            ckfinder: {
+                                                uploadUrl: '/upload',
+                                            },
+                                        }}
+                                    />
+                                </div>
+
+                                <div className="modal-item">
+                                    <label>Chapter</label>
+                                    <select
+                                        name="chapter"
+                                        value={newLesson.chapter}
+                                        onChange={handleChapterChange}
+                                    >
+                                        <option value="">Select Chapter</option>
+                                        {['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4'].map((chapter, index) => (
+                                            <option key={index} value={chapter}>
+                                                {chapter}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="modal-buttons">
+                                    <button onClick={handleCloseModal} className="btn btn-outline-secondary">
+                                        Cancel
+                                    </button>
+                                    <button onClick={handleAddNewLesson} className="btn btn-outline-primary">
+                                        Add
+                                    </button>
+                                </div>
                             </>
                         ) : (
                             <div className="delete-modal-content">
                                 <p>Are you sure you want to delete this lesson?</p>
                                 <div className="modal-buttons">
-                                    <button onClick={handleCloseModal} className="btn btn-outline-secondary">Cancel</button>
-                                    <button onClick={() => handleDelete(1)} className="btn btn-outline-danger">Delete</button>
+                                    <button onClick={handleCloseModal} className="btn btn-outline-secondary">
+                                        Cancel
+                                    </button>
+                                    <button onClick={() => handleDelete(1)} className="btn btn-outline-danger">
+                                        Delete
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -173,15 +202,15 @@ const LessonListPage: React.FunctionComponent = () => {
                 ))}
             </div>
 
-            {/* Pagination Controls */}
-            <div className="pagination-controls">
-                <button onClick={handlePrevPage} className="btn btn-outline-secondary" disabled={currentPage === 1}>
-                    Previous
-                </button>
-                <span>Page {currentPage}</span>
-                <button onClick={handleNextPage} className="btn btn-outline-secondary" disabled={currentPage === Math.ceil(lessonList.length / itemsPerPage)}>
-                    Next
-                </button>
+            <div className="pagination-container">
+                <Pagination
+                    current={currentPage}
+                    pageSize={itemsPerPage}
+                    total={lessonList.length}
+                    showLessItems
+                    onChange={handlePageChange}
+                    showQuickJumper
+                />
             </div>
         </div>
     );
