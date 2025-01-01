@@ -89,6 +89,7 @@
 }
 
 .btn-account {
+  position: relative;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -98,7 +99,7 @@
 }
 
 .dropdown {
-  position: absolute;
+  position: absolute !important;
   top: 100%;
   left: 0;
   border: 1px solid #ccc;
@@ -106,7 +107,7 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px;
   min-width: 100%;
-  z-index: 1000; /* Đảm bảo dropdown hiển thị trên các phần tử khác */
+  z-index: 1000;
   font-family: Poppins;
   font-size: 16px;
   line-height: 24px;
