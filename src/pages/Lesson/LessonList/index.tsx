@@ -1,43 +1,90 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LessonItem from "./components/LessonItem";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { Pagination } from 'antd';
+import { Pagination } from "antd";
+import lessonApi from "@/api/lessonApi";
+import env from "@/app/env";
 
-const lessons = [
-    { id: 1, title: "Lesson 1", description: "Introduction to programming", content: "Content of Lesson 1", chapter: "Chapter 1" },
-    { id: 2, title: "Lesson 2", description: "Variables and Data Types", content: "Content of Lesson 2", chapter: "Chapter 2" },
-    { id: 3, title: "Lesson 3", description: "Control Flow", content: "Content of Lesson 3", chapter: "Chapter 3" },
-    { id: 4, title: "Lesson 4", description: "Functions and Methods", content: "Content of Lesson 4", chapter: "Chapter 4" },
-    { id: 5, title: "Lesson 5", description: "Object-Oriented Programming", content: "Content of Lesson 5", chapter: "Chapter 5" },
-    { id: 6, title: "Lesson 6", description: "Data Structures", content: "Content of Lesson 6", chapter: "Chapter 6" },
-    { id: 7, title: "Lesson 7", description: "Algorithms", content: "Content of Lesson 7", chapter: "Chapter 7" },
-];
+interface Lesson {
+    id: number;
+    title: string;
+    description: string;
+    content: string;
+    chapter: string;
+    thumbnail: string;
+}
+
+interface Chapter {
+    id: number;
+    title: string;
+    description: string;
+}
 
 const LessonListPage: React.FunctionComponent = () => {
-    const [lessonList, setLessonList] = useState(lessons);
+    const [lessonList, setLessonList] = useState<Lesson[] | null>(null); // Use null as the initial state
+    const [chapterList, setChapterList] = useState<Chapter[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState<"add" | "delete" | null>(null);
     const [newLesson, setNewLesson] = useState({
         title: "",
         description: "",
-        chapter: "",
+        chapterId: "",
         content: "",
     });
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(3); // Number of lessons per page
+    const [itemsPerPage] = useState(10);
+    const [loading, setLoading] = useState(false);
+    const [totalLessons, setTotalLessons] = useState(0);
     const navigate = useNavigate();
 
-    const indexOfLastLesson = currentPage * itemsPerPage;
-    const indexOfFirstLesson = indexOfLastLesson - itemsPerPage;
-    const currentLessons = lessonList.slice(indexOfFirstLesson, indexOfLastLesson);
+    const indexOfFirstLesson = 0;
+    const indexOfLastLesson = itemsPerPage;
 
-    const handleDelete = (id: number) => {
-        setModalType("delete");
-        setShowModal(true);
+    const currentLessons = lessonList && lessonList.length > 0
+        ? lessonList.slice(indexOfFirstLesson, Math.min(indexOfLastLesson, lessonList.length))
+        : [];
+
+    useEffect(() => {
+        console.log('Fetching lessons for page:', currentPage);
+        fetchLessons(currentPage, itemsPerPage);
+        fetchChapters();
+    }, [currentPage]);
+
+    const fetchLessons = async (page: number, limit: number) => {
+        try {
+            setLoading(true);
+            const response = await lessonApi.fetchLessons(page-1, limit);
+            console.log('Fetched lessons:', response.body);
+
+            setLessonList(response.body);
+            setTotalLessons(response.pagination.total);
+        } catch (error) {
+            console.error("Error fetching lessons:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
+    const fetchChapters = async () => {
+        try {
+            const response = await lessonApi.getChapter(); // Call API to get chapters
+            console.log('Fetched chapters:', response.body);
+            setChapterList(response.body);
+        } catch (error) {
+            console.error("Error fetching chapters:", error);
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        try {
+            const res = await lessonApi.deleteLesson(id);
+            setLessonList((prev) => prev.filter((lesson) => lesson.id !== id)); // Safely update the state
+        } catch (error) {
+            console.error('Error deleting lesson:', error);
+        }
+    };
     const handleEdit = (id: number) => {
         navigate(`/lesson/${id}`);
     };
@@ -49,33 +96,48 @@ const LessonListPage: React.FunctionComponent = () => {
 
     const handleCloseModal = () => {
         setShowModal(false);
+        setNewLesson({ title: "", description: "", chapterId: "", content: "" });
     };
 
-    const handleAddNewLesson = () => {
-        const newLessonObj = {
-            id: lessonList.length + 1,
-            title: newLesson.title || `Lesson ${lessonList.length + 1}`,
-            description: newLesson.description || "New lesson description",
-            content: newLesson.content || "<p>Content of the lesson</p>",
-            chapter: newLesson.chapter || `Chapter ${lessonList.length + 1}`,
-        };
-        setLessonList([...lessonList, newLessonObj]);
-        setShowModal(false);
+    const handleAddNewLesson = async () => {
+        try {
+            const payload = {
+                title: newLesson.title,
+                description: newLesson.description,
+                content: newLesson.content,
+                chapterId: newLesson.chapterId,
+            };
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            const response = await lessonApi.addLesson(payload, config);
+
+            setLessonList((prev) => (prev ? [...prev, response.data] : [response.data]));
+            handleCloseModal();
+        } catch (error) {
+            console.error("Error adding new lesson:", error);
+        }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setNewLesson((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
 
-    const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setNewLesson((prev) => ({
-            ...prev,
-            description: e.target.value,
-        }));
+        if (name === "chapter") {
+            setNewLesson((prev) => ({
+                ...prev,
+                chapterId: value ? Number(value) : "",
+            }));
+        } else {
+            setNewLesson((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
     };
 
     const handleContentChange = (event: any, editor: any) => {
@@ -83,13 +145,6 @@ const LessonListPage: React.FunctionComponent = () => {
         setNewLesson((prev) => ({
             ...prev,
             content: data,
-        }));
-    };
-
-    const handleChapterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setNewLesson((prev) => ({
-            ...prev,
-            chapter: e.target.value,
         }));
     };
 
@@ -106,7 +161,9 @@ const LessonListPage: React.FunctionComponent = () => {
             {showModal && (
                 <div className="modal-overlay">
                     <div className={`modal-container ${modalType === "add" ? "modal-add" : "modal-delete"}`}>
-                        <button onClick={handleCloseModal} className="close-btn">X</button>
+                        <button onClick={handleCloseModal} className="close-btn">
+                            X
+                        </button>
                         <h2 className="modal-title">{modalType === "add" ? "Add New Lesson" : "Delete Lesson"}</h2>
 
                         {modalType === "add" ? (
@@ -126,7 +183,7 @@ const LessonListPage: React.FunctionComponent = () => {
                                     <textarea
                                         name="description"
                                         value={newLesson.description}
-                                        onChange={handleDescriptionChange}
+                                        onChange={handleInputChange}
                                         placeholder="Enter lesson description"
                                     />
                                 </div>
@@ -137,11 +194,7 @@ const LessonListPage: React.FunctionComponent = () => {
                                         editor={ClassicEditor}
                                         data={newLesson.content}
                                         onChange={handleContentChange}
-                                        config={{
-                                            ckfinder: {
-                                                uploadUrl: '/upload',
-                                            },
-                                        }}
+                                        config={{ ckfinder: { uploadUrl: "/upload" } }}
                                     />
                                 </div>
 
@@ -149,17 +202,19 @@ const LessonListPage: React.FunctionComponent = () => {
                                     <label>Chapter</label>
                                     <select
                                         name="chapter"
-                                        value={newLesson.chapter}
-                                        onChange={handleChapterChange}
+                                        value={newLesson.chapterId}
+                                        onChange={handleInputChange}
                                     >
                                         <option value="">Select Chapter</option>
-                                        {['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4'].map((chapter, index) => (
-                                            <option key={index} value={chapter}>
-                                                {chapter}
+                                        {chapterList.map((chapter) => (
+                                            <option key={chapter.id} value={chapter.id}>
+                                                {chapter.title}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
+
+
 
                                 <div className="modal-buttons">
                                     <button onClick={handleCloseModal} className="btn btn-outline-secondary">
@@ -188,25 +243,34 @@ const LessonListPage: React.FunctionComponent = () => {
             )}
 
             <div className="row mt-3">
-                {currentLessons.map((lesson) => (
-                    <div key={lesson.id} className="col-md-6">
-                        <LessonItem
-                            title={lesson.title}
-                            description={lesson.description}
-                            content={lesson.content}
-                            chapter={lesson.chapter}
-                            onDelete={() => handleDelete(lesson.id)}
-                            onEdit={() => handleEdit(lesson.id)}
-                        />
-                    </div>
-                ))}
+                {loading ? (
+                    <p>Loading...</p>
+                ) : lessonList && lessonList.length > 0 ? (
+                    currentLessons.map((lesson) => (
+                        <div key={lesson.id} className="col-md-6">
+                            <LessonItem
+                                title={lesson.title}
+                                thumbnail={`${ env.baseGatewayUrl + 'media' + lesson.thumbnail }`}
+                                description={lesson.description}
+                                content={lesson.content}
+                                chapter={lesson.chapter}
+                                onDelete={handleDelete}
+                                onEdit={() => handleEdit(lesson.id)}
+                                lessonId={lesson.id}
+                            />
+                        </div>
+                    ))
+                ) : (
+                    <p>No lessons available</p>
+                )}
             </div>
+
 
             <div className="pagination-container">
                 <Pagination
                     current={currentPage}
                     pageSize={itemsPerPage}
-                    total={lessonList.length}
+                    total={totalLessons}
                     showLessItems
                     onChange={handlePageChange}
                     showQuickJumper

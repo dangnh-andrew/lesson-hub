@@ -9,7 +9,8 @@ const baseURL = env.baseGatewayUrl;
 const axiosClient = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': '69420'
   },
   // withCredentials: true,
 });

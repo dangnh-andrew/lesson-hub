@@ -3,7 +3,6 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 1rem;
-  margin-bottom: 1.5rem;
   height: 100%;
 
   .lesson-item-content {
@@ -53,11 +52,13 @@
 }
 
 .action-buttons {
-  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .action-buttons button {
-  margin-right: 20px;
+  width: 48%;
+  box-sizing: border-box;
 }
 
 .action-buttons button:last-child {

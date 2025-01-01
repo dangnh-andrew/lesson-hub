@@ -1,46 +1,53 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import env from "@/app/env";
 
-const PostItem: React.FunctionComponent = () => {
+interface PostItemProps {
+  lesson: {
+    id: string;
+    title: string;
+    description: string;
+    content: string;
+    chapterId: number;
+    createdDate: string;
+    chapterName: string;
+    thumbnail: string;
+  };
+}
+
+const PostItem: React.FunctionComponent<PostItemProps> = ({ lesson }) => {
+  const thumbnailSrc =`${ env.baseGatewayUrl + 'media' + lesson.thumbnail }`
+
   return (
-    <>
-      <Link to={"/post/PostDetails"} className="link">
-        <div className="post-item-wrapper">
-          <div className="row">
-            <div className="col-sm-12 col-md-4 post-item-img">
-              <img
-                src={
-                  "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
-                }
-                alt="image"
-              />
-            </div>
-            <div className="col-sm-12 col-md-8">
-              <div className="post-item-content">
-                <h4>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s
-                </h4>
-                <p>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                  The point of using Lorem Ipsum is that it has a more-or-less
-                  normal distribution of letters, as opposed to using 'Content
-                  here, content here', making it look like readable English.
-                  Many desktop publishing packages and web page editors now use
-                  Lorem Ipsum as their default model text
-                </p>
+      <>
+        <Link to={`/post/PostDetails/${lesson.id}`} className="link">
+          <div className="post-item-wrapper">
+            <div className="row">
+              <div className="col-sm-12 col-md-4 post-item-img">
+                <img
+                    src={thumbnailSrc}
+                    alt="Lesson Thumbnail"
+                    style={{
+                      maxWidth: '100%',
+                      height: 'auto',
+                      objectFit: 'cover',
+                    }}
+                />
               </div>
-              <div>
-                <span className="created-date">2024-12-24</span>
-                <span className="primary-text"> CHAPTER 1</span>
+              <div className="col-sm-12 col-md-8">
+                <div className="post-item-content">
+                  <h4>{lesson.title}</h4>
+                  <p>{lesson.description}</p>
+                </div>
+                <div>
+                  <span className="created-date">{lesson.createdDate}</span>
+                  <span className="primary-text"> CHAPTER {lesson.chapterName}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </Link>
-    </>
+        </Link>
+      </>
   );
 };
 
