@@ -8,7 +8,7 @@ const LoginPage: React.FunctionComponent = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data:any) => {
+  const onSubmit = (data: any) => {
     console.log("Form Data:", data);
   };
 
@@ -18,14 +18,16 @@ const LoginPage: React.FunctionComponent = () => {
         <h2 className="form-title">Login</h2>
 
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="username">Username</label>
           <input
-            id="email"
-            type="email"
-            {...register("email", { required: "Email is required" })}
-            className={`form-input ${errors.email ? "has-error" : ""}`}
+            id="username"
+            type="text"
+            {...register("username", { required: "Username is required" })}
+            className={`form-input ${errors.username ? "has-error" : ""}`}
           />
-          {errors.email && <p className="error-message">{errors.email.message}</p>}
+          {errors.username && (
+            <p className="error-message"></p>
+          )}
         </div>
 
         <div className="form-group">
@@ -37,7 +39,7 @@ const LoginPage: React.FunctionComponent = () => {
             className={`form-input ${errors.password ? "has-error" : ""}`}
           />
           {errors.password && (
-            <p className="error-message">{errors.password.message}</p>
+            <p className="error-message"></p>
           )}
         </div>
 

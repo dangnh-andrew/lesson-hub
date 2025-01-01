@@ -4,7 +4,7 @@ import axiosClient, { handleRequest } from './axiosClient';
 
 const authApi = {
   login: (body: LoginRequest): Promise<HttpResponse<AuthResponse>> => {
-    const url = `/api/auth/login`;
+    const url = `/api/login`;
     return handleRequest(axiosClient.post(url, body));
   },
 };
