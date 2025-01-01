@@ -69,16 +69,23 @@
   overflow-y: auto;
 }
 
-.pagination-controls {
+/* Fix pagination to the bottom */
+.pagination-container {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   background-color: white;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
   z-index: 10;
+}
+
+ul.ant-pagination {
+  justify-content: center;
+}
+
+
+.modal-item label{
+  font-family: Poppins;
+  font-weight: 600;
 }
