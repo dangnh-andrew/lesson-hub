@@ -20,7 +20,7 @@ axiosClient.interceptors.request.use(
 );
 
 axiosClient.interceptors.request.use(request => {
-  const accessToken = localStorage.getItem('cex-access-token');
+  const accessToken = localStorage.getItem('access-token');
   if (accessToken) {
     request.headers['Authorization'] = `Bearer ${accessToken}`;
   }
@@ -57,7 +57,7 @@ axiosClient.interceptors.response.use(
       if (!config.url.includes('api/auth')) {
         config._retry = true;
         try {
-          const refreshToken = localStorage.getItem('cex-refresh-token');
+          const refreshToken = localStorage.getItem('refresh-token');
           const response = await axios.get(`${baseURL}/api/auth/refresh-token`, {
             headers: {
               'Authorization': `Bearer ${refreshToken}`,
@@ -70,8 +70,8 @@ axiosClient.interceptors.response.use(
           return axiosClient(config);
         } catch (refreshError) {
           // store.dispatch(resetIsLogin());
-          localStorage.removeItem('cex-access-token');
-          localStorage.removeItem('cex-refresh-token');
+          localStorage.removeItem('access-token');
+          localStorage.removeItem('refresh-token');
           return Promise.reject(refreshError);
         }
       }

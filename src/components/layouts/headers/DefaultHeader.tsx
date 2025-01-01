@@ -43,7 +43,7 @@ const DefaultHeader: React.FunctionComponent = () => {
   };
 
   const navigate = useNavigate();
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option:any) => {
     console.log(`Selected: ${option}`);
     setDropdownVisible(false);
 
