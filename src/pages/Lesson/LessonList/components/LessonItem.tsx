@@ -1,56 +1,77 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface LessonItemProps {
-  title: string;
-  description: string;
-  content: string;
-  chapter: string;
-  onDelete: () => void;
-  onEdit: () => void;
+    title: string;
+    thumbnail: string;
+    description: string;
+    content: string;
+    chapter: string;
+    onDelete: (id: number) => void;
+    onEdit: (id: number) => void;
+    lessonId: number;
 }
 
 const LessonItem: React.FunctionComponent<LessonItemProps> = ({
-                                                                  title, description, content, chapter, onDelete, onEdit
+                                                                  thumbnail, title, description, content, chapter, onDelete, onEdit, lessonId
                                                               }) => {
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
 
     const handleDelete = () => {
         setShowModal(true);
     };
 
-    const handleConfirmDelete = () => {
-        onDelete();
-        setShowModal(false);
+    const handleConfirmDelete = async () => {
+        if (lessonId) {
+            await onDelete(lessonId);
+            setShowModal(false);
+            navigate("/lesson");
+        } else {
+            console.error('Invalid lesson ID');
+        }
     };
 
     const handleCancelDelete = () => {
         setShowModal(false);
+        navigate("/lesson");
     };
-
     return (
         <div className="lesson-item-wrapper">
-            <Link to={"/post/PostDetails"} className="link">
-                <div className="row">
-                    <div className="col-sm-12">
-                        <div className="lesson-item-content">
-                            <h4>{title}</h4>
-                            <p style={{ color: "gray" }}>{description}</p>
-                            <p>{content}</p>
-                        </div>
-                        <div>
-                            <span className="secondary-text">{chapter}</span>
-                        </div>
+            <div className="row">
+                <div className="col-sm-12 col-md-4 post-item-img">
+                    {thumbnail && (
+                        <img
+                            src={thumbnail}
+                            alt="Lesson Thumbnail"
+                            style={{
+                                maxWidth: '100%',
+                                height: 'auto',
+                                objectFit: 'cover',
+                            }}
+                        />
+                    )}
+                </div>
+
+                <div className="col-sm-12 col-md-8">
+                    <div className="lesson-item-content">
+                        <h4>{title}</h4>
+                        <p style={{ color: "gray" }}>{description}</p>
+                        <p>{content}</p>
+                    </div>
+                    <div>
+                        <span className="secondary-text">{chapter}</span>
+                    </div>
+
+                    <div className="action-buttons">
+                        <button className="btn btn-danger" onClick={handleDelete}>
+                            Delete
+                        </button>
+                        <button className="btn btn-secondary" onClick={() => onEdit(lessonId)}>
+                            Edit
+                        </button>
                     </div>
                 </div>
-            </Link>
-            <div className="action-buttons">
-                <button className="btn btn-danger" onClick={handleDelete}>
-                    Delete
-                </button>
-                <button className="btn btn-secondary" onClick={onEdit}>
-                    Edit
-                </button>
             </div>
 
             {showModal && (
@@ -73,6 +94,5 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
         </div>
     );
 };
-
 
 export default LessonItem;
