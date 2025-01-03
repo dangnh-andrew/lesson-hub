@@ -10,7 +10,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src')
     }
   },
-  optimizeDeps: {
-    include: ["@ckeditor/ckeditor5-react", "@ckeditor/ckeditor5-build-classic"]
-  }
 });
