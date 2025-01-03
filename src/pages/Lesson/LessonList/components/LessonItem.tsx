@@ -13,8 +13,15 @@ interface LessonItemProps {
 }
 
 const LessonItem: React.FunctionComponent<LessonItemProps> = ({
-                                                                  thumbnail, title, description, content, chapter, onDelete, onEdit, lessonId
-                                                              }) => {
+    thumbnail,
+    title,
+    description,
+    content,
+    chapter,
+    onDelete,
+    onEdit,
+    lessonId,
+}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
@@ -28,7 +35,7 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
             setShowModal(false);
             navigate("/lesson");
         } else {
-            console.error('Invalid lesson ID');
+            console.error("Invalid lesson ID");
         }
     };
 
@@ -45,9 +52,9 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
                             src={thumbnail}
                             alt="Lesson Thumbnail"
                             style={{
-                                maxWidth: '100%',
-                                height: 'auto',
-                                objectFit: 'cover',
+                                maxWidth: "100%",
+                                height: "auto",
+                                objectFit: "cover",
                             }}
                         />
                     )}
@@ -67,7 +74,10 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
                         <button className="btn btn-danger" onClick={handleDelete}>
                             Delete
                         </button>
-                        <button className="btn btn-secondary" onClick={() => onEdit(lessonId)}>
+                        <button
+                            className="btn btn-secondary"
+                            onClick={() => onEdit(lessonId)}
+                        >
                             Edit
                         </button>
                     </div>
@@ -77,14 +87,22 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal-container modal-delete">
-                        <button onClick={handleCancelDelete} className="close-btn">X</button>
+                        <button onClick={handleCancelDelete} className="close-btn">
+                            X
+                        </button>
                         <h2>Confirm Deletion</h2>
                         <p>Are you sure you want to delete this lesson?</p>
                         <div className="modal-buttons">
-                            <button onClick={handleCancelDelete} className="btn btn-outline-secondary">
+                            <button
+                                onClick={handleCancelDelete}
+                                className="btn btn-outline-secondary"
+                            >
                                 Cancel
                             </button>
-                            <button onClick={handleConfirmDelete} className="btn btn-outline-danger">
+                            <button
+                                onClick={handleConfirmDelete}
+                                className="btn btn-outline-danger"
+                            >
                                 Delete
                             </button>
                         </div>

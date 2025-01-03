@@ -22,9 +22,9 @@ const LoginPage: React.FunctionComponent = () => {
     }
   };
 
-  if (isLogin) {
-    return <Navigate to='/'/>;
-  }
+  // if (isLogin) {
+  //   return <Navigate to='/'/>;
+  // }
 
   return (
     <div className="login-form-wrapper">
