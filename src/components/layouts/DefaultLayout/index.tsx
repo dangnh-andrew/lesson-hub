@@ -14,7 +14,7 @@ const DefaultLayout: React.FunctionComponent = () => {
       <DefaultHeader />
       <div className="main-content">
         <div className={`main-container ${isFullPage ? "full-screen" : ""}`}>
-          {isLogin ? <Outlet /> : <Navigate to="/login" />}
+          {/* {isLogin ? <Outlet /> : <Navigate to="/login" />} */}
         </div>
       </div>
     </>
