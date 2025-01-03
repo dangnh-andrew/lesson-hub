@@ -5,20 +5,19 @@ const lessonApi = {
     const params = { page, size };
     return handleRequest(axiosClient.get('/lesson', { params }));
   },
-  addLesson: (lesson: any, config: any): Promise<any> => {
+  addLesson: (lesson: any): Promise<any> => {
     const url = '/admin/lesson';
-
     const headers = {
-      'Content-Type': 'application/json',
-      ...config?.headers,
+      'Content-Type': 'multipart/form-data',
     };
-
     return handleRequest(axiosClient.post(url, lesson, { headers }));
   },
-
-  updateLesson: (id: number): Promise<any> => {
+  updateLesson: (id: number, lesson: any): Promise<any> => {
     const url = `/admin/lesson/${id}`;
-    return handleRequest(axiosClient.put(url));
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+    };
+    return handleRequest(axiosClient.put(url, lesson, { headers }));
   },
   detailLesson: (id: number): Promise<any> => {
     const url = `/admin/lesson/${id}`;
@@ -27,6 +26,10 @@ const lessonApi = {
   deleteLesson: (id: number): Promise<any> => {
     const url = `/admin/lesson/${id}`;
     return handleRequest(axiosClient.delete(url));
+  },
+  getLesson: (id: number): Promise<any> => {
+    const url = `/lesson/${id}`;
+    return handleRequest(axiosClient.get(url));
   },
   getChapter: (): Promise<any> => {
     const url = '/chapter';

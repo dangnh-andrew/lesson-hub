@@ -131,7 +131,7 @@ const DefaultHeader: React.FunctionComponent = () => {
                 </ul>
               </div>
           ) : (
-              <span className="lesson">Lesson</span>
+              <></>
           )}
         </div>
       </>
