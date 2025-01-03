@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import chapterApi from "@/api/chapterApi";
 import lessonApi from "@/api/lessonApi";
 import env from "@/app/env";
-import EditorComponent from "@/components/formEditor";
 
 const EditLessonPage: React.FunctionComponent = () => {
   const { id } = useParams();
@@ -124,7 +123,6 @@ const EditLessonPage: React.FunctionComponent = () => {
         </div>
         <div className="form-group">
           <label>Content</label>
-          <EditorComponent/>
         </div>
         <div className="form-group">
           <label>Chapter</label>
