@@ -1,12 +1,12 @@
+import { useAppSelector } from "@/hooks/common";
+import { selectAuth } from "@/redux/slice/authSlice";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 const AdminPanelLayout: React.FunctionComponent = () => {
-  return (
-    <>
-      <Outlet/>
-    </>
-  );
+  const { isLogin } = useAppSelector(selectAuth);
+
+  return <div>{isLogin ? <Outlet /> : <Navigate to={"/login"} />}</div>;
 };
 
 export default AdminPanelLayout;
