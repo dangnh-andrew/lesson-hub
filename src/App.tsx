@@ -16,24 +16,24 @@ import AddLessonPage from "@/pages/Lesson/AddLesson";
 
 function App() {
   return (
-    <>
       <Routes>
-        <Route path="/" element={<DefaultLayout />}>
-          <Route path="" element={<HomePage />} />
-          <Route path="/geogebra" element={<GeoGebraPage />} />
-          <Route path="/post" element={<PostListPage />} />
-          <Route path="/post/:postUrlKey" element={<PostDetailsPage />} />
+          <Route path="/" element={<DefaultLayout />}>
+              <Route path="" element={<HomePage />} />
+              <Route path="geogebra" element={<GeoGebraPage />} />
+              <Route path="lesson" element={<PostListPage />} />
+              <Route path="lesson/:id" element={<PostDetailsPage />} />
         </Route>
+
         <Route element={<PublicLayout />}>
-          <Route path="/login" element={<LoginPage />} />
+            <Route path="login" element={<LoginPage />} />
         </Route>
+
         <Route element={<AdminPanelLayout />}>
-          <Route path="/lesson" element={<LessonListPage />} />
-          <Route path="/lesson/:id" element={<EditLessonPage />} />
-          <Route path="/lesson/add" element={<AddLessonPage/>} />
+            <Route path="admin/lesson" element={<LessonListPage />} />
+            <Route path="admin/lesson/:id" element={<EditLessonPage />} />
+            <Route path="lesson/add" element={<AddLessonPage />} />
         </Route>
       </Routes>
-    </>
   );
 }
 
