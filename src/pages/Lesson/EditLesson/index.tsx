@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import chapterApi from "@/api/chapterApi";
 import lessonApi from "@/api/lessonApi";
 import env from "@/app/env";
+import FormEditor from "@/components/formEditor";
 
 const EditLessonPage: React.FunctionComponent = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const EditLessonPage: React.FunctionComponent = () => {
       title: "",
       description: "",
       thumbnail: "",
-      contentEditor: "",
+      content: "",
       chapterId: "",
     },
   });
@@ -123,6 +124,10 @@ const EditLessonPage: React.FunctionComponent = () => {
         </div>
         <div className="form-group">
           <label>Content</label>
+          <FormEditor
+            onChange={(data) => setValue("content", data)}
+            data={getValues().content}
+          />
         </div>
         <div className="form-group">
           <label>Chapter</label>
