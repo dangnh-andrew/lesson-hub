@@ -64,7 +64,7 @@ const LessonListPage: React.FunctionComponent = () => {
     };
 
     const handleEdit = (id: number) => {
-        navigate(`/lesson/${id}`);
+        navigate(`/admin/lesson/${id}`);
     };
 
     const handlePageChange = (page: number) => {
