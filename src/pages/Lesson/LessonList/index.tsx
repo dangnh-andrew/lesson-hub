@@ -67,7 +67,7 @@ const LessonListPage: React.FunctionComponent = () => {
 
     const fetchChapters = async () => {
         try {
-            const response = await lessonApi.getChapter(); // Call API to get chapters
+            const response = await lessonApi.getChapter();
             console.log('Fetched chapters:', response.body);
             setChapterList(response.body);
         } catch (error) {
@@ -84,7 +84,7 @@ const LessonListPage: React.FunctionComponent = () => {
         }
     };
     const handleEdit = (id: number) => {
-        navigate(`/lesson/${id}`);
+        navigate(`/admin/lesson/${id}`);
     };
 
     const handleAddLesson = () => {
@@ -106,12 +106,7 @@ const LessonListPage: React.FunctionComponent = () => {
                 chapterId: newLesson.chapterId,
             };
 
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            };
-            const response = await lessonApi.addLesson(payload, config);
+            const response = await lessonApi.addLesson(payload);
 
             setLessonList((prev) => (prev ? [...prev, response.data] : [response.data]));
             handleCloseModal();

@@ -5,7 +5,6 @@ interface ENV {
 
 const env: ENV = {
   baseGatewayUrl: import.meta.env.VITE_REACT_APP_BASE_GATEWAY_URL
-  // baseGatewayUrl: process.env.REACT_APP_BASE_GATEWAY_URL
 };
 
 export default env;

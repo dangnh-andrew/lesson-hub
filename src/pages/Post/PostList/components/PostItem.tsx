@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import env from "@/app/env";
+import { format } from "date-fns";
 
 interface PostItemProps {
   lesson: {
@@ -13,14 +14,16 @@ interface PostItemProps {
     chapterName: string;
     thumbnail: string;
   };
+  chapterTitle?: string;
 }
 
-const PostItem: React.FunctionComponent<PostItemProps> = ({ lesson }) => {
-  const thumbnailSrc =`${ env.baseGatewayUrl + 'media' + lesson.thumbnail }`
+const PostItem: React.FunctionComponent<PostItemProps> = ({ lesson, chapterTitle }) => {
+  const thumbnailSrc = `${env.baseGatewayUrl + 'media' + lesson.thumbnail}`;
+  const formattedDate = format(new Date(lesson.createdDate), "dd-MM-yyyy");
 
   return (
       <>
-        <Link to={`/post/PostDetails/${lesson.id}`} className="link">
+        <Link to={`/lesson/${lesson.id}`} className="link">
           <div className="post-item-wrapper">
             <div className="row">
               <div className="col-sm-12 col-md-4 post-item-img">
@@ -28,20 +31,21 @@ const PostItem: React.FunctionComponent<PostItemProps> = ({ lesson }) => {
                     src={thumbnailSrc}
                     alt="Lesson Thumbnail"
                     style={{
-                      maxWidth: '100%',
-                      height: 'auto',
-                      objectFit: 'cover',
+                      borderRadius: "16px",
+                      maxWidth: "100%",
+                      height: "auto",
+                      objectFit: "cover",
                     }}
                 />
               </div>
-              <div className="col-sm-12 col-md-8">
+              <div className="col-sm-12 col-md-8" style={{ display: "flex", flexDirection: "column" }}>
                 <div className="post-item-content">
                   <h4>{lesson.title}</h4>
                   <p>{lesson.description}</p>
                 </div>
-                <div>
-                  <span className="created-date">{lesson.createdDate}</span>
-                  <span className="primary-text"> CHAPTER {lesson.chapterName}</span>
+                <div className="post-footer">
+                  <span className="created-date">{formattedDate}</span>
+                  <span className="primary-text">{chapterTitle || "Unknown Chapter"}</span>
                 </div>
               </div>
             </div>

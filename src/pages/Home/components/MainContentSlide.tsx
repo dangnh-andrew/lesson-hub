@@ -12,56 +12,42 @@ const MainContentSlide: React.FunctionComponent = () => {
 
   const properties = {
     prevArrow: (
-      <button className="btn-slide">
-        <span>&#10094;</span>
-      </button>
+        <button className="btn-slide">
+          <span>&#10094;</span>
+        </button>
     ),
     nextArrow: (
-      <button className="btn-slide">
-        <span>&#10095;</span>
-      </button>
+        <button className="btn-slide">
+          <span>&#10095;</span>
+        </button>
     ),
   };
 
   return (
-    <>
-      <Slide {...properties}>
-        <div className="each-slide-effect">
-          <Link to={"/post/Test1"} className="link">
-            <div className="slide-container">
-              <div className="img-slide">
-                <img src={images[0]} />
+      <div>
+        <Slide {...properties}>
+          {images.map((image, index) => (
+              <div className="each-slide-effect" key={index}>
+                <Link to={`/post/Test${index + 1}`} className="link">
+                  <div className="slide-container">
+                    <div className="img-slide">
+                      <img src={image} alt={`Slide ${index + 1}`} />
+                    </div>
+                    <div className="slide-content">
+                      <span className="content-chapter">CHAPTER {index + 1}</span>
+                      <h4>
+                        It is a long established fact that a reader will be
+                        distracted by the readable content of a page when looking at
+                        its layout.
+                      </h4>
+                      <span className="content-created-date">2024-12-24</span>
+                    </div>
+                  </div>
+                </Link>
               </div>
-              <div className="slide-content">
-                <span className="content-chapter">CHAPTER 1</span>
-                <h4>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                </h4>
-                <span className="content-created-date">2024-12-24</span>
-              </div>
-            </div>
-          </Link>
-        </div>
-        <div className="each-slide-effect">
-          <Link to={"/post/Test2"} className="link">
-            <div className="slide-container">
-              <div className="img-slide">
-                <img src={images[1]} />
-              </div>
-              <div className="slide-content">
-                <span className="content-chapter">CHAPTER 2</span>
-                <h4>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                </h4>
-                <span className="content-created-date">2024-12-24</span>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </Slide>
-    </>
+          ))}
+        </Slide>
+      </div>
   );
 };
 
