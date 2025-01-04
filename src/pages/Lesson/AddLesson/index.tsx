@@ -3,15 +3,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import chapterApi from "@/api/chapterApi";
 import lessonApi from "@/api/lessonApi";
-import env from "@/app/env";
+import FormEditor from "@/components/formEditor";
 
 const AddLessonPage: React.FunctionComponent = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [thumbnail, setThumbnail] = useState<string>('');
+  const [thumbnail, setThumbnail] = useState<string>("");
   const [chapters, setChapters] = useState<any[]>([]);
 
-  const { register, handleSubmit, setValue, getValues, reset } = useForm({
+  const { register, handleSubmit, setValue, reset } = useForm({
     defaultValues: {
       title: "",
       description: "",
@@ -113,10 +113,11 @@ const AddLessonPage: React.FunctionComponent = () => {
             {...register("thumbnail")}
             className="form-control"
           />
-          <img src={env.baseGatewayUrl + "media" + thumbnail}/>
+          {/* <img src={env.baseGatewayUrl + "media" + thumbnail}/> */}
         </div>
         <div className="form-group">
           <label>Content</label>
+          <FormEditor onChange={(data) => setValue("content", data)} />
         </div>
         <div className="form-group">
           <label>Chapter</label>
