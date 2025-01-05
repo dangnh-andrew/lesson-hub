@@ -53,11 +53,10 @@ const PostListPage: React.FunctionComponent = () => {
         fetchChapters();
     }, [searchParams]);
 
-    const fetchPosts = async (page: number, limit: number, searchText: string = '', sort: string = '') => {
+    const fetchPosts = async (page: number, limit: number, searchText: string = '', sort: string = '', chapterId: string = '') => {
         try {
             setLoading(true);
             let response;
-            const chapterId = searchParams.get("chapterId");
             const queryParams = new URLSearchParams();
 
             if (searchText) {
@@ -66,7 +65,7 @@ const PostListPage: React.FunctionComponent = () => {
             }
 
             if (chapterId) {
-                queryParams.append("chapterId", chapterId);
+                queryParams.append("chapterId.equals", chapterId); // Use chapterId.equals instead of chapterId
             }
 
             response = await lessonApi.searchLessons(
@@ -96,7 +95,7 @@ const PostListPage: React.FunctionComponent = () => {
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
         navigate(`?search=${searchQuery}&page=${page}&sort=${sortOrder}`, { replace: true });
-        fetchPosts(page, itemsPerPage, searchQuery, sortOrder);
+        fetchPosts(page, itemsPerPage, searchQuery, sortOrder, searchParams.get("chapterId") || "");
     };
 
     const handleSortClick = () => {
@@ -104,14 +103,16 @@ const PostListPage: React.FunctionComponent = () => {
         setSortOrder(newSortOrder);
 
         navigate(`?search=${searchQuery}&page=${currentPage}&sort=${newSortOrder}`, { replace: true });
-        fetchPosts(currentPage, itemsPerPage, searchQuery, newSortOrder);
+        fetchPosts(currentPage, itemsPerPage, searchQuery, newSortOrder, searchParams.get("chapterId") || "");
     };
 
     const handleChapterSelect = (id: number, title: string) => {
-        const chapterId = Number(id);
+        const chapterId = String(id);
         setSelectedChapter(title);
-        navigate(`?search=${searchQuery}&page=1&sort=${sortOrder}&chapterId=${chapterId}`, { replace: true });
-        fetchPosts(1, itemsPerPage, searchQuery, sortOrder);
+
+        navigate(`?search=${searchQuery}&page=1&sort=${sortOrder}&chapterId.equals=${chapterId}`, { replace: true });
+
+        fetchPosts(1, itemsPerPage, searchQuery, sortOrder, chapterId);
     };
 
     const chapterMenu = (
