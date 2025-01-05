@@ -22,16 +22,16 @@ function App() {
               <Route path="geogebra" element={<GeoGebraPage />} />
               <Route path="lesson" element={<PostListPage />} />
               <Route path="lesson/:id" element={<PostDetailsPage />} />
-        </Route>
+              <Route path="admin/lesson" element={<LessonListPage />} />
+              <Route path="admin/lesson/:id" element={<EditLessonPage />} />
+              <Route path="lesson/add" element={<AddLessonPage />} />
+          </Route>
 
         <Route element={<PublicLayout />}>
             <Route path="login" element={<LoginPage />} />
         </Route>
 
         <Route element={<AdminPanelLayout />}>
-            <Route path="admin/lesson" element={<LessonListPage />} />
-            <Route path="admin/lesson/:id" element={<EditLessonPage />} />
-            <Route path="lesson/add" element={<AddLessonPage />} />
         </Route>
       </Routes>
   );

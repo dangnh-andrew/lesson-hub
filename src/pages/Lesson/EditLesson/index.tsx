@@ -88,12 +88,6 @@ const EditLessonPage: React.FunctionComponent = () => {
 
   return (
     <div className="edit-lesson-page">
-      <div className="top-row">
-        <button onClick={handleBack} className="btn btn-secondary">
-          Back
-        </button>
-        <h2>Edit Lesson</h2>
-      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label>Title</label>
