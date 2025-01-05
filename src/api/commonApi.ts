@@ -9,6 +9,13 @@ const commonApi = {
     };
     return handleRequest(axiosClient.post(url, body, {headers}));
   },
+  uploadVideo: (body: any): Promise<HttpResponse<any>> => {
+    const url = `/admin/media/upload-video`;
+    const headers = {
+      'Content-Type': 'multipart/form-data',
+    };
+    return handleRequest(axiosClient.post(url, body, {headers}));
+  },
 };
 
 export default commonApi;

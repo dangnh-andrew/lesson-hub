@@ -37,6 +37,8 @@ const DefaultLayout: React.FunctionComponent = () => {
                 return "List Lesson";
             case path.startsWith("/admin/lesson/"):
                 return "Edit Lesson";
+            case path === "/admin/chapter":
+                return "Chapter";
             default:
                 return "";
         }
