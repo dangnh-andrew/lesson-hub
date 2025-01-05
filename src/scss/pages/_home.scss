@@ -52,7 +52,11 @@
       }
 
       .lastest-content-meta {
+
         strong {
+          font-family: Poppins;
+          font-weight: 400;
+          line-height: 15.6px;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
@@ -61,8 +65,10 @@
         }
 
         .created-date {
+          font-family: Poppins;
           color: lightgray;
           font-size: 12px;
+          padding-right: 16px;
         }
       }
     }

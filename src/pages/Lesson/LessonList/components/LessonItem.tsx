@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {IssuesCloseOutlined} from "@ant-design/icons";
 
 interface LessonItemProps {
     title: string;
@@ -60,7 +61,7 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
                     )}
                 </div>
 
-                <div className="col-sm-12 col-md-8">
+                <div className="col-sm-12 col-md-8 custom-item">
                     <div className="lesson-item-content">
                         <h4>{title}</h4>
                         <p style={{ color: "gray" }}>{description}</p>
@@ -71,11 +72,11 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
                     </div>
 
                     <div className="action-buttons">
-                        <button className="btn btn-danger" onClick={handleDelete}>
+                        <button className="btn btn-outline-danger" onClick={handleDelete}>
                             Delete
                         </button>
                         <button
-                            className="btn btn-secondary"
+                            className="btn btn-outline-secondary"
                             onClick={() => onEdit(lessonId)}
                         >
                             Edit
@@ -88,7 +89,7 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
                 <div className="modal-overlay">
                     <div className="modal-container modal-delete">
                         <button onClick={handleCancelDelete} className="close-btn">
-                            X
+                            <IssuesCloseOutlined style={{ fontSize: "1.5rem" }} />
                         </button>
                         <h2>Confirm Deletion</h2>
                         <p>Are you sure you want to delete this lesson?</p>

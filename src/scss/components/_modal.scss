@@ -51,6 +51,10 @@
   cursor: pointer;
 }
 
+.close-btn:hover {
+  border: 1px solid orange;
+}
+
 .modal-container input,
 .modal-container textarea,
 .modal-container select {

@@ -11,7 +11,7 @@ const DefaultLayout: React.FunctionComponent = () => {
 
     const shouldHideSidebar =
         noSidebarRoutes.includes(location.pathname) ||
-        matchPath("/admin/lesson/:id", location.pathname); // Kiểm tra mẫu động
+        matchPath("/admin/lesson/:id", location.pathname);
 
     useEffect(() => {
         setActiveMenu(location.pathname);
