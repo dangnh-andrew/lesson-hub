@@ -5,7 +5,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  isLogin: !!localStorage.getItem('cex-access-token'),
+  isLogin: !!localStorage.getItem('access-token'),
 };
 
 const authSlice = createSlice({

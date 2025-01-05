@@ -1,103 +1,117 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import Select from "react-select/base";
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "@/hooks/common";
+import { resetIsLogin, selectAuth } from "@/redux/slice/authSlice";
+import authApi from "@/api/authApi";
 
-const DefaultHeader: React.FunctionComponent = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
+interface DefaultHeaderProps {
+  tabName: string;
+}
 
-  const [isClearable, setIsClearable] = useState(true);
-  const [isSearchable, setIsSearchable] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRtl, setIsRtl] = useState(false);
-  const colourOptions: any[] = [];
+const DefaultHeader: React.FunctionComponent<DefaultHeaderProps> = ({
+  tabName,
+}) => {
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { isLogin } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
 
-  const [selectedOption, setSelectedOption] = useState<any>(null); // Trạng thái lưu giá trị đã chọn
+  const navigate = useNavigate();
 
-  // Hàm xử lý sự kiện khi chọn giá trị
-  const handleChange = (selectedOption: any) => {
-    setSelectedOption(selectedOption);
+  const handleOptionClick = (option: string) => {
+    setDropdownVisible(false);
+    if (option === "login") {
+      navigate("/login");
+    } else if (option === "lesson") {
+      navigate("/admin/lesson");
+    } else if (option === "chapter") {
+      navigate("/admin/chapter");
+    }
   };
+
+  const handleLogOut = async () => {
+    const response = await authApi.logout();
+    if (response.ok) {
+      localStorage.removeItem("access-token");
+      localStorage.removeItem("refresh-token");
+      dispatch(resetIsLogin())
+    }
+  };
+
+  const toggleDropdown = () => setDropdownVisible(!isDropdownVisible);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsSearchOpen(false);
+        setDropdownVisible(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <>
-      <div className="header">
-        <div className="header-top">
-          <div></div>
-          <div></div>
-          <div className="d-flex justify-content-between align-items-center">
-            <button
-              className="btn btn-search"
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-            >
-              <span>
-                <Icon icon="uil:search" />
-              </span>
-            </button>
-            <button className="btn-account">
-              <Icon icon="mage:user" width="24" height="24" />
-            </button>
+    <header className="header">
+      <div className="header-top">
+        <h1 className="tab-name">
+          <div className="back-button" onClick={() => window.history.back()}>
+            <FaArrowLeft className="back-icon" />
           </div>
-        </div>
-        {isSearchOpen && (
-          <div className="search-box" ref={searchRef}>
-            <div className="row">
-              <div className="col-12">
-                <Select
-                  className="basic-single"
-                  classNamePrefix="select"
-                  isDisabled={false}
-                  isLoading={false}
-                  isClearable={true}
-                  isSearchable={true}
-                  name="color"
-                  options={colourOptions}
-                  value={selectedOption}
-                  onChange={handleChange}
-                  inputValue=""
-                  onInputChange={(inputValue) => console.log(inputValue)}
-                  onMenuOpen={() => console.log("Menu Opened")}
-                  onMenuClose={function (): void {
-                    throw new Error("Function not implemented.");
-                  }}
-                />
-              </div>
+          <div className="tab-title">{tabName}</div>
+        </h1>
+        <div className="account-container">
+          <button className="btn-account" onClick={toggleDropdown}>
+            <Icon
+              icon="mdi:account-circle"
+              width="24"
+              style={{ color: "#222222" }}
+            />
+          </button>
+          {isDropdownVisible && (
+            <div className="dropdown" ref={dropdownRef}>
+              {isLogin ? (
+                <>
+                  <div
+                    className="dropdown-option"
+                    onClick={() => {
+                      handleLogOut();
+                      handleOptionClick("lesson");
+                    }}
+                  >
+                    Log out
+                  </div>
+                  <div
+                    className="dropdown-option"
+                    onClick={() => handleOptionClick("lesson")}
+                  >
+                    Lesson
+                  </div>
+                  <div
+                    className="dropdown-option"
+                    onClick={() => handleOptionClick("chapter")}
+                  >
+                    Chapter
+                  </div>
+                </>
+              ) : (
+                <div
+                  className="dropdown-option"
+                  onClick={() => handleOptionClick("login")}
+                >
+                  Login
+                </div>
+              )}
             </div>
-          </div>
-        )}
-        <div className="header-menu">
-          <ul>
-            <li>
-              <Link to={""}>Home</Link>
-            </li>
-            <li>
-              <Link to={"/geogebra"}>GeoGebra</Link>
-            </li>
-            <li>
-              <Link to={"/post"}>Post</Link>
-            </li>
-          </ul>
+          )}
         </div>
       </div>
-    </>
+    </header>
   );
 };
 

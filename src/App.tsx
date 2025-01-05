@@ -9,22 +9,33 @@ import PostDetailsPage from "./pages/Post/PostDetails";
 import PostListPage from "./pages/Post/PostList";
 import LoginPage from "./pages/Login";
 import PublicLayout from "./components/layouts/PublicLayout";
+import LessonListPage from "./pages/Lesson/LessonList";
+import AdminPanelLayout from "@/components/layouts/AdminPanelLayout";
+import EditLessonPage from "@/pages/Lesson/EditLesson";
+import AddLessonPage from "@/pages/Lesson/AddLesson";
+import ManageChapterPage from "@/pages/Chapter";
 
 function App() {
   return (
-    <>
       <Routes>
-        <Route path="/" element={<DefaultLayout />}>
-          <Route path="" element={<HomePage />} />
-          <Route path="/geogebra" element={<GeoGebraPage />} />
-          <Route path="/post" element={<PostListPage />} />
-          <Route path="/post/:postUrlKey" element={<PostDetailsPage />} />
-        </Route>
+          <Route path="/" element={<DefaultLayout />}>
+              <Route path="" element={<HomePage />} />
+              <Route path="geogebra" element={<GeoGebraPage />} />
+              <Route path="lesson" element={<PostListPage />} />
+              <Route path="lesson/:id" element={<PostDetailsPage />} />
+          </Route>
+
         <Route element={<PublicLayout />}>
-          <Route path="/login" element={<LoginPage />} />
+            <Route path="login" element={<LoginPage />} />
+        </Route>
+
+        <Route element={<AdminPanelLayout />}>
+          <Route path="admin/lesson" element={<LessonListPage />} />
+          <Route path="admin/lesson/:id" element={<EditLessonPage />} />
+          <Route path="admin/lesson/add" element={<AddLessonPage />} />
+          <Route path="admin/chapter" element={<ManageChapterPage/>} />
         </Route>
       </Routes>
-    </>
   );
 }
 

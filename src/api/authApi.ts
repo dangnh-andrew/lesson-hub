@@ -4,8 +4,12 @@ import axiosClient, { handleRequest } from './axiosClient';
 
 const authApi = {
   login: (body: LoginRequest): Promise<HttpResponse<AuthResponse>> => {
-    const url = `/api/auth/login`;
+    const url = `/auth/login`;
     return handleRequest(axiosClient.post(url, body));
+  },
+  logout: (): Promise<HttpResponse<any>> => {
+    const url = `/auth/logout`;
+    return handleRequest(axiosClient.post(url));
   },
 };
 
