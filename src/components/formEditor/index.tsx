@@ -7,11 +7,13 @@ import {
   useCurrentEditor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
 import commonApi from "@/api/commonApi";
 import env from "@/app/env";
 import TextAlign from "@tiptap/extension-text-align";
 import { Video } from "@/components/formEditor/extentions/VideoExtention";
+import { CustomImage } from "@/components/formEditor/extentions/ImageExtention";
+import { MathExtension } from "@aarkue/tiptap-math-extension";
+import "katex/dist/katex.min.css";
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -204,7 +206,7 @@ const MenuBar = () => {
         >
           Hard Break
         </button>
-        <button
+        {/* <button
           type="button"
           onClick={() => editor.chain().focus().setColor("#958DF1").run()}
           className={
@@ -214,7 +216,7 @@ const MenuBar = () => {
           }
         >
           Purple
-        </button>
+        </button> */}
         <button onClick={addImage} type="button" disabled={isUploading}>
           {isUploading ? "Uploading..." : "Insert Image"}
         </button>
@@ -268,8 +270,9 @@ const FormEditor: React.FunctionComponent<IFormEditor> = ({
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle,
-    Image,
+    CustomImage,
     Video,
+    MathExtension.configure({ evaluation: true }),
     StarterKit.configure({
       bulletList: {
         keepMarks: true,
