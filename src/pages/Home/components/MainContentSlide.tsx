@@ -33,7 +33,7 @@ const MainContentSlide: React.FunctionComponent<IContentSlideProps> = ({ data })
 
                     return (
                         <div className="each-slide-effect" key={index}>
-                            <Link to={`/post/${item.id}`} className="link">
+                            <Link to={`/lesson/${item.id}`} className="link">
                                 <div className="slide-container">
                                     <div className="img-slide">
                                         <img

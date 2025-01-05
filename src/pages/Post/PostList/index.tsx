@@ -89,13 +89,13 @@ const PostListPage: React.FunctionComponent = () => {
         const value = e.target.value;
         setSearchQuery(value);
 
-        navigate(`?search=${value}&page=1&sort=${sortOrder}`, { replace: true });
+        navigate(`?search=${value}&page=1&sort=createdDate,${sortOrder}`, { replace: true });
         fetchPosts(1, itemsPerPage, value, sortOrder);
     };
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
-        navigate(`?search=${searchQuery}&page=${page}&sort=${sortOrder}`, { replace: true });
+        navigate(`?search=${searchQuery}&page=${page}&sort=createdDate,${sortOrder}`, { replace: true });
         fetchPosts(page, itemsPerPage, searchQuery, sortOrder, searchParams.get("chapterId") || "");
     };
 
@@ -103,7 +103,7 @@ const PostListPage: React.FunctionComponent = () => {
         const newSortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
         setSortOrder(newSortOrder);
 
-        navigate(`?search=${searchQuery}&page=${currentPage}&sort=${newSortOrder}`, { replace: true });
+        navigate(`?search=${searchQuery}&page=${currentPage}&sort=createdDate,${newSortOrder}`, { replace: true });
         fetchPosts(currentPage, itemsPerPage, searchQuery, newSortOrder, searchParams.get("chapterId") || "");
     };
 
@@ -111,7 +111,7 @@ const PostListPage: React.FunctionComponent = () => {
         const chapterId = String(id);
         setSelectedChapter(title);
 
-        navigate(`?search=${searchQuery}&page=1&sort=${sortOrder}&chapterId.equals=${chapterId}`, { replace: true });
+        navigate(`?search=${searchQuery}&page=1&sort=createdDate,${sortOrder}&chapterId.equals=${chapterId}`, { replace: true });
 
         fetchPosts(1, itemsPerPage, searchQuery, sortOrder, chapterId);
     };
