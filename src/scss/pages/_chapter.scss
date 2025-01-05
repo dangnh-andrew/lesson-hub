@@ -1,38 +1,59 @@
 .chapter-table-wrapper {
   table {
     margin: 0 auto;
-    border: 1px solid #d3d3d3; // Viền màu xám nhạt cho toàn bảng
+    border: 1px solid #333333;
     border-collapse: collapse;
     width: 100%;
 
     th, td {
-      border: 1px solid #d3d3d3; // Viền xám nhạt giữa các ô
+      border: 1px solid #d3d3d3;
       padding: 8px;
       text-align: left;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: Poppins;
     }
 
     th {
-      background-color: #F7BC85;      // Nền nhạt cho tiêu đề cột
+      text-align: center;
+      background-color: #f7bc85;
     }
 
     tbody tr:nth-child(even) {
-      background-color: #fff7e7; // Màu cam nhạt
+      background-color: rgba(249, 233, 217, 0.5);
     }
 
-    // Đặt width cho các cột
     th:first-child,
     td:first-child {
-      width: 30%; // Cột đầu tiên chiếm 30%
+      width: 30%;
     }
 
     th:nth-child(2),
     td:nth-child(2) {
-      width: 50%; // Cột thứ hai chiếm 50%
+      width: 50%;
     }
 
     th:last-child,
     td:last-child {
-      width: 20%; // Cột cuối cùng chiếm 20%
+      width: 20%;
     }
   }
 }
+
+.chapter-table-wrapper button {
+  width: 45%;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chapter-table-wrapper .edit {
+  background-color: white;
+  color: #198754;
+}
+
+//.chapter-table-wrapper .delete {
+//  background-color: #f44336;
+//  color: white;
+//}
