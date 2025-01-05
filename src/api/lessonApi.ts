@@ -37,14 +37,25 @@ const lessonApi = {
     return handleRequest(axiosClient.get(url));
   },
 
-  searchLessons: (title: string, description: string, page: number, size: number): Promise<any> => {
-    const params: any = { page, size };
-    if (title) params['title.contains'] = title;
-    if (description) params['description.contains'] = description;
+  searchLessons: (searchQuery: string, page: number, size: number, sort: string): Promise<any> => {
+    const params: any = { page, size, sort };
+
+    if (searchQuery) {
+      const searchParams = new URLSearchParams(searchQuery);
+      const titleSearch = searchParams.get('title.contains');
+      const descriptionSearch = searchParams.get('description.contains');
+
+      if (titleSearch) {
+        params['title.contains'] = titleSearch;
+      }
+
+      if (descriptionSearch) {
+        params['description.contains'] = descriptionSearch;
+      }
+    }
 
     return handleRequest(axiosClient.get('/lesson', { params }));
   },
-
 };
 
 export default lessonApi;

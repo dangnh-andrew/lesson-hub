@@ -1,23 +1,27 @@
 .search-sort-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
   margin-bottom: 24px;
+  justify-content: flex-start;
+  position: relative;
+  gap: 10px;
 }
 
 .search-sort-row .ant-input-search {
   flex-grow: 1;
+  max-width: 400px;
 }
 
 .icon-wrapper {
   margin-right:24px;
-  margin-left: 50px;
   align-items: center;
   justify-content: center;
   padding: 10px;
   border-radius: 4px;
   display: inline-flex;
+  margin-left: auto;
+  cursor: pointer;
 }
 
 .icon-wrapper svg {
@@ -123,7 +127,6 @@
   color: white !important;
 }
 
-/* Button color when hovered */
 .custom-search .ant-btn:hover {
   background-color: #ff7f0e !important;
   border-color: #ff7f0e !important;
@@ -215,4 +218,23 @@
 
 .lesson-content li {
   margin-bottom: 10px;
+}
+
+.dropdown-wrapper {
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border: 1px solid orange;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  color: gray;
+}
+
+.dropdown-wrapper:hover {
+  border-color: #ff7f0e !important;
+  box-shadow: 0 0 0 2px rgba(255, 127, 14, 0.2) !important;
 }
