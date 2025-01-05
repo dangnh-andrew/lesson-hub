@@ -31,9 +31,9 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
 
     const handleConfirmDelete = async () => {
         if (lessonId) {
-            await onDelete(lessonId);
+            onDelete(lessonId);
             setShowModal(false);
-            navigate("/lesson");
+            navigate("/admin/lesson");
         } else {
             console.error("Invalid lesson ID");
         }
@@ -41,7 +41,7 @@ const LessonItem: React.FunctionComponent<LessonItemProps> = ({
 
     const handleCancelDelete = () => {
         setShowModal(false);
-        navigate("/lesson");
+        navigate("/admin/lesson");
     };
     return (
         <div className="lesson-item-wrapper">

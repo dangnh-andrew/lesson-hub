@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
@@ -11,12 +11,45 @@ import Image from "@tiptap/extension-image";
 import commonApi from "@/api/commonApi";
 import env from "@/app/env";
 import TextAlign from "@tiptap/extension-text-align";
+import { Video } from "@/components/formEditor/extentions/VideoExtention";
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
   const [isUploading, setIsUploading] = useState(false);
 
   if (!editor) return null;
+
+  const setVideo= React.useCallback(() => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "video/*";
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+
+      setIsUploading(true);
+
+      try {
+        const formData = new FormData();
+        formData.append("video", file);
+
+        const response = await commonApi.uploadVideo(formData);
+
+        if (response.ok && response.body) {
+          editor?.commands.setVideo(env.baseGatewayUrl + "media" + response.body.filePath);
+        } else {
+          throw new Error("Upload failed!");
+        }
+      } catch (error) {
+        console.error("Error uploading video:", error);
+        alert("Failed to upload video. Please try again.");
+      } finally {
+        setIsUploading(false);
+      }
+    };
+  }, [editor]);
 
   const addImage = useCallback(async () => {
     const input = document.createElement("input");
@@ -217,6 +250,7 @@ const MenuBar = () => {
         >
           Justify
         </button>
+        <button type="button" onClick={setVideo} className={editor.isActive('video') ? 'is-active' : ''}>Video</button>
       </div>
     </div>
   );
@@ -235,6 +269,7 @@ const FormEditor: React.FunctionComponent<IFormEditor> = ({
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle,
     Image,
+    Video,
     StarterKit.configure({
       bulletList: {
         keepMarks: true,

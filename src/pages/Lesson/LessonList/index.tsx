@@ -74,7 +74,7 @@ const LessonListPage: React.FunctionComponent = () => {
     return (
         <div className="lesson-list-container">
             <div className="d-flex justify-content-end">
-                <button onClick={()=>{navigate("/lesson/add")}} className="btn btn-outline-success">Add New Lesson</button>
+                <button onClick={()=>{navigate("/admin/lesson/add")}} className="btn btn-outline-success">Add New Lesson</button>
             </div>
             <div className="row mt-3">
                 {loading ? (

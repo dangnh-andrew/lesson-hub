@@ -13,6 +13,7 @@ import LessonListPage from "./pages/Lesson/LessonList";
 import AdminPanelLayout from "@/components/layouts/AdminPanelLayout";
 import EditLessonPage from "@/pages/Lesson/EditLesson";
 import AddLessonPage from "@/pages/Lesson/AddLesson";
+import ManageChapterPage from "@/pages/Chapter";
 
 function App() {
   return (
@@ -22,9 +23,6 @@ function App() {
               <Route path="geogebra" element={<GeoGebraPage />} />
               <Route path="lesson" element={<PostListPage />} />
               <Route path="lesson/:id" element={<PostDetailsPage />} />
-              <Route path="admin/lesson" element={<LessonListPage />} />
-              <Route path="admin/lesson/:id" element={<EditLessonPage />} />
-              <Route path="lesson/add" element={<AddLessonPage />} />
           </Route>
 
         <Route element={<PublicLayout />}>
@@ -32,6 +30,10 @@ function App() {
         </Route>
 
         <Route element={<AdminPanelLayout />}>
+          <Route path="admin/lesson" element={<LessonListPage />} />
+          <Route path="admin/lesson/:id" element={<EditLessonPage />} />
+          <Route path="admin/lesson/add" element={<AddLessonPage />} />
+          <Route path="admin/chapter" element={<ManageChapterPage/>} />
         </Route>
       </Routes>
   );

@@ -7,6 +7,10 @@ const authApi = {
     const url = `/auth/login`;
     return handleRequest(axiosClient.post(url, body));
   },
+  logout: (): Promise<HttpResponse<any>> => {
+    const url = `/auth/logout`;
+    return handleRequest(axiosClient.post(url));
+  },
 };
 
 export default authApi;

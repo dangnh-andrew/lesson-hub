@@ -37,7 +37,7 @@ const lessonApi = {
     return handleRequest(axiosClient.get(url));
   },
 
-  searchLessons: (searchQuery: string, page: number, size: number, sort: string): Promise<any> => {
+  searchLessons: (searchQuery: string, page: number, size: number, sort: string, chapterId: number): Promise<any> => {
     const params: any = { page, size, sort };
 
     if (searchQuery) {
@@ -51,6 +51,10 @@ const lessonApi = {
 
       if (descriptionSearch) {
         params['description.contains'] = descriptionSearch;
+      }
+
+      if (chapterId) {
+        params['chapterId.equals'] = chapterId;
       }
     }
 

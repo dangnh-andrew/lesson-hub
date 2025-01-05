@@ -40,7 +40,7 @@ const PostListPage: React.FunctionComponent = () => {
         const query = searchParams.get("search") || "";
         const page = parseInt(searchParams.get("page") || "1", 10);
         const sort = searchParams.get("sort") || "desc";
-        const chapterId = searchParams.get("chapterId");
+        const chapterId = searchParams.get("chapterId.equals");
 
         setSearchQuery(query);
         setCurrentPage(page);
@@ -49,7 +49,7 @@ const PostListPage: React.FunctionComponent = () => {
             const chapter = chapterList.find(ch => ch.id === parseInt(chapterId, 10));
             setSelectedChapter(chapter ? chapter.title : "");
         }
-        fetchPosts(page, itemsPerPage, query, sort);
+        fetchPosts(page, itemsPerPage, query, sort, String(chapterId));
         fetchChapters();
     }, [searchParams]);
 
@@ -65,14 +65,15 @@ const PostListPage: React.FunctionComponent = () => {
             }
 
             if (chapterId) {
-                queryParams.append("chapterId.equals", chapterId); // Use chapterId.equals instead of chapterId
+                queryParams.append("chapterId.equals", chapterId);
             }
-
+            
             response = await lessonApi.searchLessons(
                 queryParams.toString(),
                 page - 1,
                 limit,
-                sort
+                sort,
+                Number(chapterId)
             );
 
             setPosts(response.body);

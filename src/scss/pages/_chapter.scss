@@ -1,0 +1,38 @@
+.chapter-table-wrapper {
+  table {
+    margin: 0 auto;
+    border: 1px solid #d3d3d3; // Viền màu xám nhạt cho toàn bảng
+    border-collapse: collapse;
+    width: 100%;
+
+    th, td {
+      border: 1px solid #d3d3d3; // Viền xám nhạt giữa các ô
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #F7BC85;      // Nền nhạt cho tiêu đề cột
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #fff7e7; // Màu cam nhạt
+    }
+
+    // Đặt width cho các cột
+    th:first-child,
+    td:first-child {
+      width: 30%; // Cột đầu tiên chiếm 30%
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 50%; // Cột thứ hai chiếm 50%
+    }
+
+    th:last-child,
+    td:last-child {
+      width: 20%; // Cột cuối cùng chiếm 20%
+    }
+  }
+}

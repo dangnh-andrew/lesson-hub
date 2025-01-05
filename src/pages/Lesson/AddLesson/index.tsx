@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import chapterApi from "@/api/chapterApi";
 import lessonApi from "@/api/lessonApi";
@@ -111,10 +111,18 @@ const AddLessonPage: React.FunctionComponent = () => {
         </div>
         <div className="form-group">
           <label>Content</label>
-          <FormEditor onChange={(data) => setValue("content", data)} />
+          <FormEditor
+            onChange={(data) => setValue("content", data)}
+            data={"<p></p>"}
+          />
         </div>
         <div className="form-group">
-          <label>Chapter</label>
+          <label>
+            <span>Chapter </span>
+            <span>
+              <Link to="/admin/chapter">Manage chapter</Link>
+            </span>
+          </label>
           <select
             {...register("chapter", { required: true })}
             className="form-control"
