@@ -14,7 +14,6 @@ import AdminPanelLayout from "@/components/layouts/AdminPanelLayout";
 import EditLessonPage from "@/pages/Lesson/EditLesson";
 import AddLessonPage from "@/pages/Lesson/AddLesson";
 import ManageChapterPage from "@/pages/Chapter";
-import NotFoundPage from "@/pages/NotFoundLayout";
 
 function App() {
   return (
@@ -36,7 +35,6 @@ function App() {
           <Route path="admin/lesson/add" element={<AddLessonPage />} />
           <Route path="admin/chapter" element={<ManageChapterPage/>} />
         </Route>
-          <Route path="*" element={<NotFoundPage />} />
       </Routes>
   );
 }
